@@ -4,9 +4,10 @@ This is a simple server that scrapes ingress objects stored in kubernetes to gen
 
 What exactly is it doing?
 The Biggest assumption that I am making with this project is that if you create an ingress object with hosts and paths they should be reachable with a http/s request, and you would want to monitor them with prometheus.
-This project is most likely useful for those of us using an ingress controller such as [haproxy](https://github.com/jcmoraisjr/haproxy-ingress),[nginx](https://github.com/kubernetes/ingress-nginx), or [traefik](https://docs.traefik.io/user-guide/kubernetes/) in kubernetes. But with some flags explained below it can be configured as a simple url status checker and any list of urls.
+This project is most likely useful for those of us using an ingress controller such as [haproxy](https://github.com/jcmoraisjr/haproxy-ingress), [nginx](https://github.com/kubernetes/ingress-nginx), or [traefik](https://docs.traefik.io/user-guide/kubernetes/) in kubernetes. But with some flags explained below it can be configured as a simple url status checker and any list of urls.
 My scope of how others are using ingress controllers is limited so if this project does not work for your implementation of an ingress controller/ingress objects please let me know.
 see [Ingress Parsing](#Ingress-Parsing) section below to see the details of how urls are generated.
+
 ## Getting Started
 
 To run it:
@@ -288,6 +289,8 @@ https://test-2.example.com
 https://test-2.example.com/ping2
 ```
 ## Development
+### Docker
+you can find the built images here: [dockerhub](https://hub.docker.com/r/brandocomando8/ingress-status-exporter/)
 ### Building
 
 ```bash
