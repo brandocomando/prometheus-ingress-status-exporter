@@ -1,0 +1,34 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: ingress-status-exporter
+  name: ingress-status-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingress-status-exporter
+  template:
+    metadata:
+      labels:
+        app: ingress-status-exporter
+    spec:
+      containers:
+        - name: ingress-status-exporter
+          imagePullPolicy: Always
+          image: brandocomando8/ingress-status-exporter
+          args: 
+            - -customizefile
+            - /opt/configs/customize.txt
+          ports:
+          - containerPort: 8080
+          volumeMounts:
+          - mountPath: /opt/configs
+            name: config
+      volumes:
+      - name: config
+        configMap:
+          name: customize
+

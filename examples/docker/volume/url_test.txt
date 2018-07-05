@@ -1,0 +1,3 @@
+https://google.com
+https://golang.org
+https://http://brokenexample.com/

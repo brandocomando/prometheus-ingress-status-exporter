@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ingress-status
+  namespace: monitoring
+  labels:
+    k8s-app: ingress-status-exporter
+spec:
+  namespaceSelector:
+    matchNames:
+      - monitoring
+  selector:
+    matchLabels:
+      app: ingress-status-exporter
+  endpoints:
+  - port: http-metrics
+    path: /metrics
+    interval: 30s

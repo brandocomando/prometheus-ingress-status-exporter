@@ -61,19 +61,18 @@ func main() {
 		additional = loadUrlsFromFile(addurlsfile)
 	}
 
-	if incluster {
-		config, err = rest.InClusterConfig()
-		if err != nil {
-			log.Fatal(err)
-		}
-	} else {
-		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-
 	if *urlsfile == "" {
+		if incluster {
+			config, err = rest.InClusterConfig()
+			if err != nil {
+				log.Fatal(err)
+			}
+		} else {
+			config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 		//get list of urls from kubernetes
 		urls = getIngressUrls(config, *namespace)
 

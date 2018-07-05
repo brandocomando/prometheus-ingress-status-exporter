@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  customize.txt: |
+    !/path/i/dont/care/about
+    !domain.test.example.com
+    domain.test.example/ping
+kind: ConfigMap
+metadata:
+  name: customize
+  namespace: monitoring
