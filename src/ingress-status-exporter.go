@@ -38,7 +38,7 @@ func (collector *urlStatusCollector) Collect(ch chan<- prometheus.Metric) {
 	localulrs := urls
 	//loop through urls of all ingress objects and kick off a routine to check their status
 	for _, url := range localulrs {
-		go checkURL(collector, url, ch, wait)
+		go checkURL(collector, url, timeout, ch, wait)
 	}
 	//wait for all urls to respond.
 	for i := 1; i <= len(localulrs); i++ {
@@ -47,10 +47,10 @@ func (collector *urlStatusCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 //Checks the url for each ingress object.
-func checkURL(collector *urlStatusCollector, l string, ch chan<- prometheus.Metric, wait chan string) {
-	timeout := time.Duration(5 * time.Second)
+func checkURL(collector *urlStatusCollector, l string, timeout time.Duration, ch chan<- prometheus.Metric, wait chan string) {
+	timeoutseconds := time.Duration(timeout * time.Second)
 	client := http.Client{
-		Timeout: timeout,
+		Timeout: timeoutseconds,
 	}
 	r, err := client.Get(l) // does follow redirects
 	var resp float64

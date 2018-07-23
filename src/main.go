@@ -27,6 +27,7 @@ var (
 	//included regex built from -customizefile flag.
 	included []string
 	urls     url
+	timeout  time.Duration
 )
 
 func main() {
@@ -46,9 +47,11 @@ func main() {
 	namespace := flag.String("namespace", "", "namespace to monitor ingress objects, defaults all namespaces")
 	reloadinterval := flag.Int("reloadinterval", 30, "interval between reloading config from kubernetes in seconds, default 30")
 	urlsfile := flag.String("urlfile", "", "path to file with urls to test, 1 line for each url")
+	timeoutflag := flag.Float64("timeout", 5, "path to file with urls to test, 1 line for each url")
 
 	flag.Parse()
 
+	timeout = time.Duration(*timeoutflag)
 	if *kubeconfig == "" {
 		incluster = true
 	}
@@ -184,16 +187,24 @@ func getIngressUrls(config *rest.Config, namespace string) url {
 
 //remove excluded urls in -customizefile file
 func (urls url) removeExcluded(excluded []string) url {
+	found := false
 	for _, exclude := range excluded {
 		//loop backwards to avoid skipping elements
 		for i := len(urls) - 1; i >= 0; i-- {
 			if strings.Contains(urls[i], exclude) {
+				found = false
 				//skip if matches included line
 				for _, include := range included {
-					if !strings.Contains(urls[i], include) {
-						urls = append(urls[:i], urls[i+1:]...)
+					if strings.Contains(include, exclude) {
+						if strings.Contains(urls[i], include) {
+							found = true
+						}
 					}
 				}
+				if !found {
+					urls = append(urls[:i], urls[i+1:]...)
+				}
+
 			}
 		}
 	}

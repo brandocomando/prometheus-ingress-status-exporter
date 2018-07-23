@@ -43,6 +43,12 @@ You can specify a specific namespace to check with the -namespace flag. Defaults
 ./ingress-status-exporter -namespace default
 ```
 
+### Timeout
+the -timeout flag allows you to set the timeout when checking urls in seconds, defaults to 5
+```bash
+./ingress-status-exporter -timeout 60
+```
+
 ### Urlsfile
 by default ingress-status-exporter will generate a list of urls from kubernetes ingress objects, but if you would like to specify a list of urls to check you can do so with the -urlfile flag
 ```bash
